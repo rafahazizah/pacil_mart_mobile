@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:pacil_mart/widgets/left_drawer.dart';
+import 'package:pacil_mart/widgets/pacil_mart_card.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage ({Key? key}) : super(key: key);
     final List<ShopItem> items = [
-      ShopItem("Lihat Item", Icons.checklist),
-      ShopItem("Tambah Item", Icons.add_shopping_cart),
-      ShopItem("Logout", Icons.logout),
+      ShopItem("Lihat Item", Icons.checklist, Color.fromARGB(255, 54, 54, 54)),
+      ShopItem("Tambah Item", Icons.add_shopping_cart,Color.fromARGB(255, 95, 95, 95)),
+      ShopItem("Logout", Icons.logout,Color.fromARGB(255, 150, 150, 150)),
   ];
 
   // This widget is the home page of your application. It is stateful, meaning
@@ -23,8 +25,12 @@ class MyHomePage extends StatelessWidget {
             appBar: AppBar(
               title: const Text(
                 'Pacil Mart',
+                style: TextStyle(color: Colors.white),
               ),
+              backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+              foregroundColor: Colors.white,
             ),
+            drawer: const LeftDrawer(),
             body: SingleChildScrollView(
               // Widget wrapper yang dapat discroll
               child: Padding(
@@ -36,7 +42,7 @@ class MyHomePage extends StatelessWidget {
                       padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
                       // Widget Text untuk menampilkan tulisan dengan alignment center dan style yang sesuai
                       child: Text(
-                        'Pacil Shop', // Text yang menandakan toko
+                        'Pacil Mart', // Text yang menandakan toko
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 30,
@@ -67,55 +73,7 @@ class MyHomePage extends StatelessWidget {
   
 }
 
-class ShopCard extends StatelessWidget {
-  final ShopItem item;
 
-  const ShopCard(this.item, {super.key}); // Constructor
 
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.indigo,
-      child: InkWell(
-        // Area responsive terhadap sentuhan
-        onTap: () {
-          // Memunculkan SnackBar ketika diklik
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(SnackBar(
-                content: Text("Kamu telah menekan tombol ${item.name}!")));
-        },
-        child: Container(
-          // Container untuk menyimpan Icon dan Text
-          padding: const EdgeInsets.all(8),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  item.icon,
-                  color: Colors.white,
-                  size: 30.0,
-                ),
-                const Padding(padding: EdgeInsets.all(3)),
-                Text(
-                  item.name,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-class ShopItem {
-  final String name;
-  final IconData icon;
-
-  ShopItem(this.name, this.icon);
-}
 
 
