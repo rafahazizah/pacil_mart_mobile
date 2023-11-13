@@ -42,8 +42,8 @@ class _ShopFormPageState extends State<ShopFormPage> {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 decoration: InputDecoration(
-                  hintText: "Nama Produk",
-                  labelText: "Nama Produk",
+                  hintText: "Nama Item",
+                  labelText: "Nama Item",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
