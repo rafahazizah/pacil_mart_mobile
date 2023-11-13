@@ -219,7 +219,7 @@ Berikut adalah langkah-langkah yang ada dalam tutorial "Getting Started with Flu
     ```
 
 # TUGAS 8
-#### Jelaskan perbedaan antara Navigator.push() dan Navigator.pushReplacement(), disertai dengan contoh mengenai penggunaan kedua metode tersebut yang tepat!
+## Jelaskan perbedaan antara Navigator.push() dan Navigator.pushReplacement(), disertai dengan contoh mengenai penggunaan kedua metode tersebut yang tepat!
 1. Navigator.push(): Metode ini digunakan untuk menavigasi ke halaman baru dan menambahkannya ke tumpukan halaman (stack) yang ada. Hal ini berarti halaman sebelumnya tetap ada di tumpukan dan dapat kembali ke halaman tersebut jika diperlukan.
 ```dart
   if (item.name == "Lihat Item") {
@@ -240,7 +240,7 @@ Berikut adalah langkah-langkah yang ada dalam tutorial "Getting Started with Flu
   }
 ```
 
-#### Jelaskan masing-masing layout widget pada Flutter dan konteks penggunaannya masing-masing!
+## Jelaskan masing-masing layout widget pada Flutter dan konteks penggunaannya masing-masing!
 1. Container: Widget ini memungkinkan Anda untuk menyesuaikan widget anak dengan menambahkan padding, margin, border, atau warna latar belakang
 
 2. Row dan Column: Widget ini digunakan untuk menata widget anak secara horizontal (Row) atau vertikal (Column)
@@ -251,7 +251,7 @@ Berikut adalah langkah-langkah yang ada dalam tutorial "Getting Started with Flu
 
 5. ListView: Widget ini adalah widget scrolling yang paling umum digunakan. Ia menampilkan widget anaknya satu per satu dalam arah scroll
 
-#### Sebutkan apa saja elemen input pada form yang kamu pakai pada tugas kali ini dan jelaskan mengapa kamu menggunakan elemen input tersebut!
+## Sebutkan apa saja elemen input pada form yang kamu pakai pada tugas kali ini dan jelaskan mengapa kamu menggunakan elemen input tersebut!
 1. Elemen Nama Item menggunakan TextFormField dengan Data Type String. Ini digunakan untuk mengambil nama item yang akan ditambahkan. Validasi diterapkan untuk memastikan bahwa input tidak kosong.
 
 2. Elemen Jumlah menggunakan TextFormField dengan Data Type int. Walaupun menggunakan TextFormField tapi bisa dikoversikan ke bentuk int karena jumlah biasanya merupakan angka. Validasi diterapkan untuk memastikan bahwa input tidak hanya angka, tetapi juga tidak boleh kosong.
@@ -261,7 +261,7 @@ Berikut adalah langkah-langkah yang ada dalam tutorial "Getting Started with Flu
 4. TextFormField: Ini ideal untuk mengumpulkan input teks dengan kemungkinan validasi yang ada.
 
 
-#### Bagaimana penerapan clean architecture pada aplikasi Flutter?
+## Bagaimana penerapan clean architecture pada aplikasi Flutter?
 Penerapan Clean Architecture pada aplikasi Flutter melibatkan pembagian aplikasi menjadi beberapa lapisan berdasarkan prinsip-prinsip Clean Architecture. 
   1. Data & Platform Layer: Lapisan data terletak di lapisan paling luar. Lapisan ini terdiri dari kode sumber data seperti konsumsi Rest API, akses ke database lokal, Firebase, atau sumber lain. Juga, pada lapisan ini, biasanya ada kode platform yang membangun UI (widget)
 
@@ -269,7 +269,7 @@ Penerapan Clean Architecture pada aplikasi Flutter melibatkan pembagian aplikasi
 
   3. Domain Layer: Lapisan domain adalah yang terdalam dalam arsitektur bersih. Lapisan ini berisi kode untuk logika bisnis aplikasi seperti entitas dan use case
 
-#### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial)
+## Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial)
 1. Membuat new folder dengan nama widget lal buat file baru di dalamnya dnegan nama left_drawer.dart dan masukkan kode ini di dalamnya dan tambhakan pada bagian drawer header.
 ```dart
 import 'package:flutter/material.dart';
