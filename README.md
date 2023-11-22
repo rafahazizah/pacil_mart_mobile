@@ -924,25 +924,25 @@ class Item {
 
 
 # Tugas 9
-#### Apakah bisa kita melakukan pengambilan data JSON tanpa membuat model terlebih dahulu? Jika iya, apakah hal tersebut lebih baik daripada membuat model sebelum melakukan pengambilan data JSON?
+## Apakah bisa kita melakukan pengambilan data JSON tanpa membuat model terlebih dahulu? Jika iya, apakah hal tersebut lebih baik daripada membuat model sebelum melakukan pengambilan data JSON?
 Kita bisa melakukan pengambilan data JSON tanpa membuat model terlebih dahulu di banyak bahasa pemrograman, termasuk di Flutter dengan menggunakan dart:convert dan metode jsonDecode. Namun, pendekatan ini biasanya kurang disarankan karena dapat menimbulkan masalah ketika struktur data berubah dan membuat kode lebih sulit untuk dipahami dan dikelola. Membuat model dapat membantu dalam validasi data dan memberikan struktur yang jelas untuk data .
 
-#### Jelaskan fungsi dari CookieRequest dan jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.
+## Jelaskan fungsi dari CookieRequest dan jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.
 Dengan menggunakan cookie, kita dapat menyimpan informasi otentikasi atau sesi. Untuk memastikan konsistensi dalam mengakses informasi otentikasi di seluruh aplikasi, penting untuk berbagi instance CookieRequest ke semua komponen yang memerlukannya.
 
-#### Jelaskan mekanisme pengambilan data dari JSON hingga dapat ditampilkan pada Flutter.
+## Jelaskan mekanisme pengambilan data dari JSON hingga dapat ditampilkan pada Flutter.
   1. Pengambilan Data: Gunakan pustaka HTTP (seperti Dio atau http) untuk mengambil data dari API dengan format JSON.
   2. Deserialisasi: Gunakan model Dart atau deserialisasi langsung untuk mengonversi data JSON ke objek Dart.
   3. Pemrosesan Data: Lakukan manipulasi dan pemrosesan data yang diperlukan.
   4. Tampilkan pada Flutter: Gunakan widget seperti ListView, GridView, atau widget kustom untuk menampilkan data.
 
-#### Jelaskan mekanisme autentikasi dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.
+## Jelaskan mekanisme autentikasi dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.
   1. Input Data Akun: Pengguna memasukkan data akun melalui antarmuka Flutter.
   2. Pengiriman ke Django: Data dikirim ke backend Django melalui permintaan HTTP (misalnya, POST request).
   3. Proses Autentikasi Django: Django memeriksa dan memvalidasi kredensial pengguna.
   4. Tampilan Menu di Flutter: Jika autentikasi berhasil, Flutter menerima respons dan menampilkan menu atau antarmuka pengguna yang sesuai.
 
-#### Sebutkan seluruh widget yang kamu pakai pada tugas ini dan jelaskan fungsinya masing-masing.
+### Sebutkan seluruh widget yang kamu pakai pada tugas ini dan jelaskan fungsinya masing-masing.
   1. AppBar: Menampilkan judul "Item".
   2. LeftDrawer: Drawer di sebelah kiri dengan opsi navigasi.
   3. FutureBuilder: membuat widget yang bergantung pada hasil operasi asynchronous fetchItem.
@@ -976,4 +976,525 @@ Dengan menggunakan cookie, kita dapat menyimpan informasi otentikasi atau sesi. 
   31. Navigator: Mengelola navigasi antar halaman dalam aplikasi Flutter.
   32. Form dan TextFormField: Untuk mengelola formulir dan input teks
 
-  #### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial).
+## Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial).
+
+### Setup Autentikasi pada Django untuk Flutter
+1. Buat app baru dengan nama authentication di project django
+2. tambah authentication di INSTALLED_APPS pada main project settings.py
+3. jalankan pip install django-cors-headers pada terminal
+4. tambahkan corsheaders di INSTALLED_APPS di main settings.py
+5. tambahkan corsheaders.middleware.CorsMiddleware di main settings.py
+6. tambahkan kode ini di settings.py pacil mart
+```python
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = 'None'
+```
+#### Implementasi Login dan logout
+7. buat metode view di authentication/views.py dan 
+```python
+from django.shortcuts import render
+from django.shortcuts import render
+from django.contrib.auth import authenticate, login as auth_login
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import logout as auth_logout
+
+
+@csrf_exempt
+def login(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+            auth_login(request, user)
+            # Status login sukses.
+            return JsonResponse({
+                "username": user.username,
+                "status": True,
+                "message": "Login sukses!"
+                # Tambahkan data lainnya jika ingin mengirim data ke Flutter.
+            }, status=200)
+        else:
+            return JsonResponse({
+                "status": False,
+                "message": "Login gagal, akun dinonaktifkan."
+            }, status=401)
+
+    else:
+        return JsonResponse({
+            "status": False,
+            "message": "Login gagal, periksa kembali email atau kata sandi."
+        }, status=401)
+    
+
+@csrf_exempt
+def logout(request):
+    username = request.user.username
+
+    try:
+        auth_logout(request)
+        return JsonResponse({
+            "username": username,
+            "status": True,
+            "message": "Logout berhasil!"
+        }, status=200)
+    except:
+        return JsonResponse({
+        "status": False,
+        "message": "Logout gagal."
+        }, status=401)
+
+```
+8. tambahkan kode ini urls.py di authentication
+```python
+from django.urls import path
+from authentication.views import login , logout
+
+app_name = 'authentication'
+
+urlpatterns = [
+    path('login/', login, name='login'),
+    path('logout/', logout, name='logout'),
+] 
+```
+9. kemudian tambahkan pathnya pada pacil_mart di file urls.py
+
+### Integrasi Sistem Autentikasi pada Flutter
+10. Jalankan perintah flutter pub add provider dan flutter pub add pbp_django_auth pada terminal flutter
+11. Modifikasi root widget dan mengganti widget yanga walnya MyHomePage menjadi LoginPage, menjadi seperti ini 
+```dart
+import 'package:flutter/material.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:pacil_mart/screens/login.dart';
+
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return Provider(
+      create: (_) {
+        CookieRequest request = CookieRequest();
+        return request;
+      },
+      child: MaterialApp(
+          title: 'Flutter App',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+            useMaterial3: true,
+          ),
+          home: LoginPage()),
+    );
+  }
+}
+```
+12. Buat file login.dart pada folder screens
+```dart
+import 'package:flutter/material.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:pacil_mart/screens/menu.dart';
+
+void main() {
+  runApp(const LoginApp());
+}
+
+class LoginApp extends StatelessWidget {
+  const LoginApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Login',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const LoginPage(),
+    );
+  }
+}
+
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Login'),
+      ),
+      body: Container(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextField(
+              controller: _usernameController,
+              decoration: const InputDecoration(
+                labelText: 'Username',
+              ),
+            ),
+            const SizedBox(height: 12.0),
+            TextField(
+              controller: _passwordController,
+              decoration: const InputDecoration(
+                labelText: 'Password',
+              ),
+              obscureText: true,
+            ),
+            const SizedBox(height: 24.0),
+            ElevatedButton(
+              onPressed: () async {
+                String username = _usernameController.text;
+                String password = _passwordController.text;
+
+                // Cek kredensial
+                // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
+                // Untuk menyambungkan Android emulator dengan Django pada localhost,
+                // gunakan URL http://10.0.2.2/
+                final response =
+                    await request.login("https://rafah-azizah-tugas.pbp.cs.ui.ac.id/auth/login/", {
+                  'username': username,
+                  'password': password,
+                });
+
+                if (request.loggedIn) {
+                  String message = response['message'];
+                  String uname = response['username'];
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => MyHomePage()),
+                  );
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(SnackBar(
+                        content: Text("$message Selamat datang, $uname.")));
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Login Gagal'),
+                      content: Text(response['message']),
+                      actions: [
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              },
+              child: const Text('Login'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+```
+### Pembuatan Model Kustom
+13. Buka web QuickType kemudian masukkan JSON dari tugas sebelumnya
+14. Buat folder baru pada folder Lib dan buat file baru didalamnya dengan nama pacil_mart_models.dart
+```dart
+// To parse this JSON data, do
+//
+//     final item = itemFromJson(jsonString);
+
+import 'dart:convert';
+
+List<Item> itemFromJson(String str) => List<Item>.from(json.decode(str).map((x) => Item.fromJson(x)));
+
+String itemToJson(List<Item> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class Item {
+    String model;
+    int pk;
+    Fields fields;
+
+    Item({
+        required this.model,
+        required this.pk,
+        required this.fields,
+    });
+
+    factory Item.fromJson(Map<String, dynamic> json) => Item(
+        model: json["model"],
+        pk: json["pk"],
+        fields: Fields.fromJson(json["fields"]),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "model": model,
+        "pk": pk,
+        "fields": fields.toJson(),
+    };
+}
+
+class Fields {
+    int user;
+    String name;
+    int amount;
+    String description;
+
+    Fields({
+        required this.user,
+        required this.name,
+        required this.amount,
+        required this.description,
+    });
+
+    factory Fields.fromJson(Map<String, dynamic> json) => Fields(
+        user: json["user"],
+        name: json["name"],
+        amount: json["amount"],
+        description: json["description"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "user": user,
+        "name": name,
+        "amount": amount,
+        "description": description,
+    };
+}
+```
+### Penerapan Fetch Data dari Django Untuk Ditampilkan ke Flutter
+#### Menambahkan Dependensi HTTP
+15. Pada terminal lakukan flutter pub add http
+16. Kemudian pada android/app/src/main/AndroidManifest.xml tambahkan kode ini
+```dart
+...
+    <application>
+    ...
+    </application>
+    <!-- Required to fetch data from the Internet. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+...
+```
+#### Melakukan Fetch Data dari Django
+17. buat file baru di dalam folder screens dengan nama list_item.dart kemudian tambahkan kode ini 
+```dart
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:pacil_mart/models/pacil_mart_models.dart';
+import 'package:pacil_mart/widgets/left_drawer.dart';
+
+class ItemPage extends StatefulWidget {
+  const ItemPage({Key? key}) : super(key: key);
+
+  @override
+  _ItemPageState createState() => _ItemPageState();
+}
+
+class _ItemPageState extends State<ItemPage> {
+  Future<List<Item>> fetchItem() async {
+    // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
+    var url = Uri.parse('https://rafah-azizah-tugas.pbp.cs.ui.ac.id/json/');
+    var response = await http.get(
+      url,
+      headers: {"Content-Type": "application/json"},
+    );
+
+    // melakukan decode response menjadi bentuk json
+    var data = jsonDecode(utf8.decode(response.bodyBytes));
+
+    // melakukan konversi data json menjadi object Product
+    List<Item> list_item = [];
+    for (var d in data) {
+      if (d != null) {
+        list_item.add(Item.fromJson(d));
+      }
+    }
+    return list_item;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('Item'),
+        ),
+        drawer: const LeftDrawer(),
+        body: FutureBuilder(
+            future: fetchItem(),
+            builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.data == null) {
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                if (!snapshot.hasData) {
+                  return const Column(
+                    children: [
+                      Text(
+                        "Tidak ada data item.",
+                        style:
+                            TextStyle(color: Color(0xff59A5D8), fontSize: 20),
+                      ),
+                      SizedBox(height: 8),
+                    ],
+                  );
+                } else {
+                  return ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (_, index) => Container(
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 12),
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "${snapshot.data![index].fields.name}",
+                                  style: const TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                Text("${snapshot.data![index].fields.amount}"),
+                                const SizedBox(height: 10),
+                                Text(
+                                    "${snapshot.data![index].fields.description}")
+                              ],
+                            ),
+                          ));
+                }
+              }
+            }));
+  }
+}
+```
+18. Tambahkan list_item.dart pada widgets/left_drawer.dart
+```dart
+ ListTile(
+      leading: const Icon(Icons.checklist),
+      title: const Text('Lihat Item'),
+      // Bagian redirection ke FragranceFormPage
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ItemPage()),
+        );
+      },
+    )
+```
+19. Pada pacil_mart_card.dart tambahkan kode ini
+```dart
+...
+else if (item.name == "Lihat Produk") {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const ProductPage()));
+  }
+...
+```
+20. Jalankan aplikasi dengan flutter run
+### Integrasi Form Flutter Dengan Layanan Django
+21. Pada project django , di main/views.py
+```python
+@csrf_exempt
+def create_item_flutter(request):
+  if request.method == 'POST':
+      
+      data = json.loads(request.body)
+
+      new_item = Item.objects.create(
+          user = request.user,
+          name = data["name"],
+          amount = int(data["amount"]),
+          description = data["description"]
+      )
+
+      new_item.save()
+
+      return JsonResponse({"status": "success"}, status=200)
+  else:
+      return JsonResponse({"status": "error"}, status=401)
+```
+22. di main/urls.py tambahkan kode ini beserta importnya
+```python
+path('create-flutter/', create_item_flutter, name='create_item_flutter'),
+```
+23. Hbungkan pacil_mart_form. dart dengan CookiesRequest
+```dart
+@override
+  Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+    return Scaffold(
+...
+```
+24. Ubah perintah pada bagian onPressed() menjadi seperti ini 
+```dart
+onPressed: () async {
+  if (_formKey.currentState!.validate()) {
+    final response = await request.postJson(
+        "https://rafah-azizah-tugas.pbp.cs.ui.ac.id/create-flutter/",
+        jsonEncode(<String, String>{
+          'name': _name,
+          'amount': _amount.toString(),
+          'description': _description,
+          // TODO: Sesuaikan field data sesuai dengan aplikasimu
+        }));
+...
+```
+25. KEmudian impor menggunakan QuickFix
+26. Untuk fungsi logout pada lib/widgets/paci_mart_card.dart
+```dart 
+...
+@override
+Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+    return Material(
+...
+```
+27. Ubah perintah onTap menjadi async dan didalamnya tambahkan kode ini
+```dart
+else if (item.name == "Logout") {
+    final response = await request.logout(
+        // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
+        "https://rafah-aziza-tugas.pbp.cs.ui.ac.id/auth/logout/");
+    String message = response["message"];
+    if (response['status']) {
+      String uname = response["username"];
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("$message Sampai jumpa, $uname."),
+      ));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginPage()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("$message"),
+      ));
+    }
+  }
+},
+```
+28. kemudian git add, commit dan push.

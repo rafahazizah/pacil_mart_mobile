@@ -121,7 +121,7 @@ class _ShopFormPageState extends State<ShopFormPage> {
                   child: ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
-                          const Color.fromARGB(255, 175, 128, 196)),
+                          Color.fromARGB(255, 0, 0, 0)),
                     ),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
