@@ -921,3 +921,59 @@ class Item {
   });
 }
 ```
+
+
+# Tugas 9
+#### Apakah bisa kita melakukan pengambilan data JSON tanpa membuat model terlebih dahulu? Jika iya, apakah hal tersebut lebih baik daripada membuat model sebelum melakukan pengambilan data JSON?
+Kita bisa melakukan pengambilan data JSON tanpa membuat model terlebih dahulu di banyak bahasa pemrograman, termasuk di Flutter dengan menggunakan dart:convert dan metode jsonDecode. Namun, pendekatan ini biasanya kurang disarankan karena dapat menimbulkan masalah ketika struktur data berubah dan membuat kode lebih sulit untuk dipahami dan dikelola. Membuat model dapat membantu dalam validasi data dan memberikan struktur yang jelas untuk data .
+
+#### Jelaskan fungsi dari CookieRequest dan jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.
+Dengan menggunakan cookie, kita dapat menyimpan informasi otentikasi atau sesi. Untuk memastikan konsistensi dalam mengakses informasi otentikasi di seluruh aplikasi, penting untuk berbagi instance CookieRequest ke semua komponen yang memerlukannya.
+
+#### Jelaskan mekanisme pengambilan data dari JSON hingga dapat ditampilkan pada Flutter.
+  1. Pengambilan Data: Gunakan pustaka HTTP (seperti Dio atau http) untuk mengambil data dari API dengan format JSON.
+  2. Deserialisasi: Gunakan model Dart atau deserialisasi langsung untuk mengonversi data JSON ke objek Dart.
+  3. Pemrosesan Data: Lakukan manipulasi dan pemrosesan data yang diperlukan.
+  4. Tampilkan pada Flutter: Gunakan widget seperti ListView, GridView, atau widget kustom untuk menampilkan data.
+
+#### Jelaskan mekanisme autentikasi dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.
+  1. Input Data Akun: Pengguna memasukkan data akun melalui antarmuka Flutter.
+  2. Pengiriman ke Django: Data dikirim ke backend Django melalui permintaan HTTP (misalnya, POST request).
+  3. Proses Autentikasi Django: Django memeriksa dan memvalidasi kredensial pengguna.
+  4. Tampilan Menu di Flutter: Jika autentikasi berhasil, Flutter menerima respons dan menampilkan menu atau antarmuka pengguna yang sesuai.
+
+#### Sebutkan seluruh widget yang kamu pakai pada tugas ini dan jelaskan fungsinya masing-masing.
+  1. AppBar: Menampilkan judul "Item".
+  2. LeftDrawer: Drawer di sebelah kiri dengan opsi navigasi.
+  3. FutureBuilder: membuat widget yang bergantung pada hasil operasi asynchronous fetchItem.
+  4. CircularProgressIndicator: Ditampilkan saat data sedang diambil.
+  5. ListView.builder: Membangun daftar item dengan model Item.
+  6. MaterialApp: Widget utama untuk aplikasi Flutter.
+  7. TextField: Input untuk username.
+  8. TextField: Input untuk password (bersifat tersembunyi).
+  9. ElevatedButton: Tombol untuk melakukan login.
+  10. SnackBar: Pesan notifikasi setelah login berhasil atau gagal.
+  11. Scaffold: Halaman utama dengan app bar, drawer dan login.
+  12. LeftDrawer: Drawer di sebelah kiri dengan opsi navigasi.
+  13. GridView.count: Menampilkan item dalam grid.
+  14. ShopCard: Card untuk setiap item dalam grid.
+  15. Drawer: Menyediakan menu navigasi ke halaman utama, tambah item, dan lihat item.
+  16. String name: Nama item.
+  17. IconData icon: Ikon yang mewakili item.
+  18. Color color: Warna latar belakang item.
+  19. Material: Menyediakan latar belakang untuk card.
+  20. InkWell: Membuat card responsif terhadap sentuhan.
+  21. Icon: Menampilkan ikon untuk item.
+  22. Text: Menampilkan nama item.
+  23. Scaffold: Halaman formulir untuk menambahkan item.
+  24. Form: Widget untuk menangani formulir.
+  25. TextFormField: Input untuk nama, jumlah, dan deskripsi item.
+  26. ElevatedButton: Tombol untuk menyimpan item baru.
+  27. Provider: Membungkus aplikasi dengan CookieRequest sebagai provider.
+  28. Container: Widget umum untuk mengelola tata letak dan dekorasi.
+  29. Column dan Row: Digunakan untuk mengatur widget secara vertikal (Column) atau horizontal (Row).
+  30. Http Package (http): Digunakan untuk melakukan permintaan HTTP ke server.
+  31. Navigator: Mengelola navigasi antar halaman dalam aplikasi Flutter.
+  32. Form dan TextFormField: Untuk mengelola formulir dan input teks
+
+  #### Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial).
