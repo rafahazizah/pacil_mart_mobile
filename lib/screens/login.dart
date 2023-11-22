@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pacil_mart/screens/register.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:pacil_mart/screens/menu.dart';
@@ -78,9 +79,10 @@ class _LoginPageState extends State<LoginPage> {
                 if (request.loggedIn) {
                   String message = response['message'];
                   String uname = response['username'];
+                  int id = response['id'];
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => MyHomePage()),
+                    MaterialPageRoute(builder: (context) => MyHomePage(id: id)),
                   );
                   ScaffoldMessenger.of(context)
                     ..hideCurrentSnackBar()
@@ -105,6 +107,23 @@ class _LoginPageState extends State<LoginPage> {
                 }
               },
               child: const Text('Login'),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Don`t have an account yet?',
+              style: TextStyle(fontSize: 16),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // Navigate to registration page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const RegistrationPage()),
+                );
+              },
+              child: const Text('Register'),
             ),
           ],
         ),

@@ -1478,7 +1478,7 @@ Widget build(BuildContext context) {
 else if (item.name == "Logout") {
     final response = await request.logout(
         // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
-        "https://rafah-aziza-tugas.pbp.cs.ui.ac.id/auth/logout/");
+        "https://rafah-azizah-tugas.pbp.cs.ui.ac.id/auth/logout/");
     String message = response["message"];
     if (response['status']) {
       String uname = response["username"];

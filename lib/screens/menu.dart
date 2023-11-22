@@ -3,7 +3,8 @@ import 'package:pacil_mart/widgets/left_drawer.dart';
 import 'package:pacil_mart/widgets/pacil_mart_card.dart';
 
 class MyHomePage extends StatelessWidget {
-  MyHomePage ({Key? key}) : super(key: key);
+  final int id;
+    MyHomePage({Key? key, required this.id}) : super(key: key);
     final List<ShopItem> items = [
       ShopItem("Lihat Item", Icons.checklist, Color.fromARGB(255, 54, 54, 54)),
       ShopItem("Tambah Item", Icons.add_shopping_cart,Color.fromARGB(255, 95, 95, 95)),
@@ -30,7 +31,7 @@ class MyHomePage extends StatelessWidget {
               backgroundColor: const Color.fromARGB(255, 0, 0, 0),
               foregroundColor: Colors.white,
             ),
-            drawer: const LeftDrawer(),
+            drawer: LeftDrawer(id:id),
             body: SingleChildScrollView(
               // Widget wrapper yang dapat discroll
               child: Padding(
@@ -61,7 +62,7 @@ class MyHomePage extends StatelessWidget {
                       shrinkWrap: true,
                       children: items.map((ShopItem item) {
                         // Iterasi untuk setiap item
-                        return ShopCard(item);
+                        return ShopCard(item, id);
                       }).toList(),
                     ),
                   ],

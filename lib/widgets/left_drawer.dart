@@ -5,7 +5,8 @@ import 'package:pacil_mart/screens/pacil_mart_form.dart';
 
 
 class LeftDrawer extends StatelessWidget {
-  const LeftDrawer({super.key});
+  final int id;
+  const LeftDrawer({super.key, required this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +52,7 @@ class LeftDrawer extends StatelessWidget {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MyHomePage(),
+                    builder: (context) => MyHomePage(id:id),
                   ));
             },
           ),
@@ -67,7 +68,7 @@ class LeftDrawer extends StatelessWidget {
                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const ShopFormPage(),
+                    builder: (context) => ShopFormPage(id:id),
                   ));
             },
           ),
@@ -78,7 +79,7 @@ class LeftDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const ItemPage()),
+                MaterialPageRoute(builder: (context) =>  ItemPage(id:id)),
               );
             },
           )
