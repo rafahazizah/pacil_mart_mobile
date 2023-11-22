@@ -143,7 +143,7 @@ class _ShopFormPageState extends State<ShopFormPage> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => MyHomePage(id: id,)),
+                                builder: (context) => MyHomePage(id:id,)),
                           );
                         } else {
                           ScaffoldMessenger.of(context)
